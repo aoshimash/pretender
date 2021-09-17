@@ -21,7 +21,7 @@ func main() {
 		log.Fatalf("Unexpected arguments %v\n", args)
 	}
 
-	displayedContent, err := getDisplayedContent(args[0])
+	content, err := getContent(args[0])
 	if err != nil {
 		log.Fatalf("%v", err)
 	}
@@ -29,10 +29,10 @@ func main() {
 	keys := keyboard.NewDriver()
 
 	itr := 0
-	length := len(displayedContent)
+	length := len(content)
 	work := func() {
 		keys.On(keyboard.Key, func(data interface{}) {
-			fmt.Printf(displayedContent[itr : itr+1])
+			fmt.Printf(content[itr : itr+1])
 			if itr == length-1 {
 				itr = 0
 			} else {
@@ -52,7 +52,7 @@ func main() {
 	log.SetOutput(os.Stderr)
 }
 
-func getDisplayedContent(src string) (content string, err error) {
+func getContent(src string) (content string, err error) {
 	if strings.HasPrefix(src, "http://") || strings.HasPrefix(src, "https://") {
 		content, err = getHttpResponseBody(src)
 		if err != nil {
